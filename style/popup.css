@@ -12,8 +12,8 @@ body {
   justify-content: center;
   background-color: #fff;
   color: #000;
-  border: 2px solid #000;
-  border-radius: 10px;
+  border: 3px solid #75ab9d;
+  border-radius: 4px;
   padding: 10px;
   font-size: 16px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -75,8 +75,8 @@ body {
 }
 
 .icon {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 }
 
 .inputForm {
@@ -127,6 +127,7 @@ body {
   line-height: 1.5;
   max-height: 200px;
   overflow-y: scroll;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 li {

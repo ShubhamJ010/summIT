@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("side-page").innerHTML = "processing...";
     document.getElementById("side-page").classList.remove("hidden");
     requestGPTAPI(content.trim(), 1, "side-page");
+    document.getElementById("copy-button").style.display = "block";
   }
 });
 
@@ -64,6 +65,7 @@ function loadMainPage() {
   // });
   copyButton.addEventListener("click", function () {
     const summaryText = document.getElementById("summary").textContent;
+
     copyToClipboard(summaryText);
     copyButton.textContent = "Copied!";
     setTimeout(() => {
@@ -73,8 +75,8 @@ function loadMainPage() {
   summarizeThisPageButton.addEventListener("click", function () {
     summarizeThisPageButton.disabled = true;
     document.getElementById("summary").innerHTML = "processing...";
-    copyButton.style.display = "block";
-    summaryInput.style.display = "block";
+    copyButton.classList.remove("hidden");
+    summaryInput.classList.remove("hidden");
     sendMessage().then((summary) => {
       summarizeThisPageButton.disabled = false;
       if (typeof summary === "string") {
@@ -140,7 +142,8 @@ async function requestGPTAPI(content, completions, ele) {
   // const language = document.getElementById("languages").value;
   const system_content =
     "You are a helpful assistant that can analyze text input and generate a concise and coherent summary that captures the main points of the input.";
-  const promptTemplate = `Please summarize the following text. You may include a brief introduction and conclusion if necessary. Your summary should be no more than 3-5 sentences long and should be in a list format, with each point numbered or bulleted:`;
+  const promptTemplate = `Please summarize the following text.Divide it into 1. Provide Summary
+2. Provide Major Points mentioned on the page You may include a brief introduction and conclusion if necessary. Your summary should be no more than 5-15 sentences long and should be in a list format, with each point numbered or bulleted:`;
   const prompt = `${promptTemplate}\n${content}`;
   const messages = [
     { role: "system", content: system_content },
