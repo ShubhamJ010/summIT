@@ -8,16 +8,7 @@
     <section id="main">
       <div class="header">
         <img class="logo" src="../img/icons/icon128.png" alt="" />
-        <select class="languages" id="languages">
-          <option value="English">English</option>
-          <option value="Chinese">Chinese</option>
-          <option value="French">French</option>
-          <option value="German">German</option>
-          <option value="Japanese">Japanese</option>
-          <option value="Korean">Korean</option>
-          <option value="Russian">Russian</option>
-          <option value="Spanish">Spanish</option>
-        </select>
+       
         <div class="apikey">
           <div id="apiKeyStored"><span>Edit GPT3 API Key</span></div>
           <img class="icon" id="editIcon" src="../img/icons/edit.png" alt="" />
@@ -28,11 +19,11 @@
         </div>
       </div>
       <div id="main-page" class="hidden">
-        <div class="inputForm">
+        <!-- <div class="inputForm">
           <input type="text" id="wordInput" placeholder="Text" />
           <button class="fullwithButton" id="summarize-button">
             Summarize
-          </button>
+          </button> -->
           <button class="fullwithButton" id="summarize-this-page-button">
             Summarize This page
           </button>
@@ -42,19 +33,6 @@
           <p id="summary"></p>
         </div>
 
-        <!-- <div class="footer">
-          <a href="https://github.com/0xAsten/summarize-it" target="_blank"
-            >Github</a
-          >
-          <a href="https://twitter.com/0xasten" target="_blank">Twitter</a>
-          <a
-            href="https://sites.google.com/view/0xasten-privacy-policy"
-            target="_blank"
-            >Privacy Policy</a
-          >
-        </div> -->
-        <p class="note">Note: gpt-3.5-turbo-16k model, MAX TOKENS, 16,384</p>
-      </div>
 
       <div id="side-page" class="hidden api-key-hint"></div>
     </section>
