@@ -8,7 +8,7 @@
     <section id="main">
       <div class="header">
         <img class="logo" src="../img/icons/icon128.png" alt="" />
-       
+
         <div class="apikey">
           <div id="apiKeyStored"><span>Edit GPT3 API Key</span></div>
           <img class="icon" id="editIcon" src="../img/icons/edit.png" alt="" />
@@ -19,20 +19,20 @@
         </div>
       </div>
       <div id="main-page" class="hidden">
-        <!-- <div class="inputForm">
-          <input type="text" id="wordInput" placeholder="Text" />
-          <button class="fullwithButton" id="summarize-button">
-            Summarize
-          </button> -->
-          <button class="fullwithButton" id="summarize-this-page-button">
-            Summarize This page
-          </button>
-        </div>
+    
+        <button class="fullwithButton" id="summarize-this-page-button">
+          Summarize This page
+        </button>
+      </div>
 
-        <div class="output" id="output">
-          <p id="summary"></p>
-        </div>
-
+      <div class="output" id="output">
+        <p id="summary"></p>
+      </div>
+      <div>
+        <button class="fullwithButton" id="copy-button" style="display: none">
+          Copy to Clipboard
+        </button>
+      </div>
 
       <div id="side-page" class="hidden api-key-hint"></div>
     </section>

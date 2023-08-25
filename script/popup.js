@@ -45,38 +45,35 @@ function loadMain() {
         retainThreeCharacters(apiKey);
     }
   });
-
-  // const summarizeButton = document.getElementById("summarize-button");
-  // const summarizeThisPageButton = document.getElementById(
-  //   "summarize-this-page-button"
-  // );
-
-  // const languageSelect = document.getElementById("languages");
-  // languageSelect.addEventListener("change", function () {
-  //   chrome.storage.sync.set({ language: languageSelect.value }, function () {
-  //     summarizeButton.innerText = "Summarize In " + languageSelect.value;
-  //     summarizeThisPageButton.innerText =
-  //       "Summarize This Page In " + languageSelect.value;
-  //   });
-  // });
-
-  // chrome.storage.sync.get(["language"], function (result) {
-  //   let language = result.language;
-  //   if (!language) language = "English";
-
-  //   languageSelect.value = language;
-  //   summarizeButton.innerText = "Summarize In " + language;
-  //   summarizeThisPageButton.innerText = "Summarize This Page In " + language;
-  // });
 }
 
 function loadMainPage() {
   const summarizeThisPageButton = document.getElementById(
     "summarize-this-page-button"
   );
+  const copyButton = document.getElementById("copy-button");
+  // const summaryInput = document.getElementById("summary");
+
+  // summaryInput.addEventListener("input", function () {
+  //   const hasContent = summaryInput.textContent.trim().length > 0;
+  //   if (hasContent) {
+  //     copyButton.style.display = "block";
+  //   } else {
+  //     copyButton.style.display = "none";
+  //   }
+  // });
+  copyButton.addEventListener("click", function () {
+    const summaryText = document.getElementById("summary").textContent;
+    copyToClipboard(summaryText);
+    copyButton.textContent = "Copied!";
+    setTimeout(() => {
+      copyButton.textContent = "Copy to Clipboard";
+    }, 2000);
+  });
   summarizeThisPageButton.addEventListener("click", function () {
     summarizeThisPageButton.disabled = true;
     document.getElementById("summary").innerHTML = "processing...";
+    copyButton.style.display = "block";
     sendMessage().then((summary) => {
       summarizeThisPageButton.disabled = false;
       if (typeof summary === "string") {
@@ -85,18 +82,6 @@ function loadMainPage() {
       console.log(summary);
     });
   });
-
-  // const summarizeButton = document.getElementById("summarize-button");
-  // summarizeButton.addEventListener("click", function () {
-  //   let words = document.getElementById("wordInput").value;
-  //   summarizeButton.disabled = true;
-  //   document.getElementById("summary").innerHTML = "processing...";
-
-  //   requestGPTAPI(words.trim(), 1, "summary").then((summary) => {
-  //     summarizeButton.disabled = false;
-  //     //document.getElementById('summary').innerHTML = summary
-  //   });
-  // });
 }
 
 const sendMessage = async () => {
@@ -129,6 +114,7 @@ const sendMessage = async () => {
 
 // a function to request GPT API and get the repsonse
 async function requestGPTAPI(content, completions, ele) {
+  //fetch api key
   const apiKey = await readSyncStorage("apiKey");
 
   // is apiKey is empty, return
@@ -269,3 +255,12 @@ const readSyncStorage = async (key) => {
       });
   });
 };
+//add to clipboard
+function copyToClipboard(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+}
