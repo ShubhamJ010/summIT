@@ -3,39 +3,74 @@
   <head>
     <title>SummarizeIt</title>
     <link rel="stylesheet" type="text/css" href="../style/popup.css" />
+    <!-- Add Bootstrap CSS link -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
-    <section id="main">
-      <div class="header">
+    <section id="main" class="container">
+      <div
+        class="header d-flex justify-content-between align-items-center mr-2"
+      >
         <img class="logo" src="../img/icons/icon128.png" alt="" />
-
+        <h1 class="font-weight-bold text-monospace mb-0">
+          Summ<span class="text-primary">IT</span>
+        </h1>
         <div class="apikey">
-          <div id="apiKeyStored"><span>Edit GPT3 API Key</span></div>
-          <img class="icon" id="editIcon" src="../img/icons/edit.png" alt="" />
+          <div id="apiKeyStored" class="mb-3">
+            <span>Edit GPT3 API Key</span>
+          </div>
+          <!-- <img class="icon" id="editIcon" src="../img/icons/edit.png" alt="" /> -->
+          <span class="material-symbols-outlined icon" id="editIcon">
+            edit
+          </span>
         </div>
         <div class="apikey hidden">
-          <input type="text" id="apiKey" placeholder="GPT3 API Key" />
-          <img class="icon" id="saveIcon" src="../img/icons/save.png" alt="" />
+          <input
+            type="text"
+            id="apiKey"
+            class="form-control mb-3 mt-3 mr-1 ml-1"
+            placeholder="GPT3 API Key"
+          />
+          <!-- <img class="icon" id="saveIcon" src="../img/icons/save.png" alt="" /> -->
+          <span class="material-symbols-outlined icon" id="saveIcon">
+            save
+          </span>
         </div>
       </div>
-      <div id="main-page" class="hidden">
-    
-        <button class="fullwithButton" id="summarize-this-page-button">
-          Summarize This page
+      <div id="main-page" class="hidden d-flex flex-column align-items-center">
+        <button class="btn btn-primary mt-3" id="summarize-this-page-button">
+          Summarize This Page
         </button>
       </div>
 
-      <div class="output" id="output">
+      <div class="output mt-4" id="output" style="display: none">
         <p id="summary"></p>
       </div>
-      <div>
-        <button class="fullwithButton" id="copy-button" style="display: none">
+
+      <div class="mt-3">
+        <button
+          class="btn btn-secondary mb-2"
+          id="copy-button"
+          style="display: none"
+        >
           Copy to Clipboard
         </button>
       </div>
 
-      <div id="side-page" class="hidden api-key-hint"></div>
+      <div id="side-page" class="hidden api-key-hint mt-3"></div>
     </section>
+
+    <!-- Add Bootstrap JS and Popper.js scripts (required for some Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script src="../script/popup.js"></script>
   </body>

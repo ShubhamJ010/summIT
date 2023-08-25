@@ -52,7 +52,7 @@ function loadMainPage() {
     "summarize-this-page-button"
   );
   const copyButton = document.getElementById("copy-button");
-  // const summaryInput = document.getElementById("summary");
+  const summaryInput = document.getElementById("output");
 
   // summaryInput.addEventListener("input", function () {
   //   const hasContent = summaryInput.textContent.trim().length > 0;
@@ -74,6 +74,7 @@ function loadMainPage() {
     summarizeThisPageButton.disabled = true;
     document.getElementById("summary").innerHTML = "processing...";
     copyButton.style.display = "block";
+    summaryInput.style.display = "block";
     sendMessage().then((summary) => {
       summarizeThisPageButton.disabled = false;
       if (typeof summary === "string") {
