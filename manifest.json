@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "SummarizeIt",
+  "version": "2.0",
+  "description": "Summarize any webpage with GPT-3 API.",
+  "icons": {
+    "16": "./img/icons/icon16.png",
+    "32": "./img/icons/icon32.png",
+    "48": "./img/icons/icon48.png",
+    "128": "./img/icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "./script/content.js",
+        "./script/content_selection.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_icon": "./img/icons/icon32.png",
+    "default_title": "Summarize Extension",
+    "default_popup": "./html/popup.html"
+  },
+  "background": {
+    "service_worker": "./script/background.js"
+  }
+}
