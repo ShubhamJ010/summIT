@@ -52,9 +52,9 @@ function loadMainPage() {
   const summarizeThisPageButton = document.getElementById(
     "summarize-this-page-button"
   );
+
   const copyButton = document.getElementById("copy-button");
   const summaryInput = document.getElementById("output");
-
   // summaryInput.addEventListener("input", function () {
   //   const hasContent = summaryInput.textContent.trim().length > 0;
   //   if (hasContent) {
@@ -72,11 +72,14 @@ function loadMainPage() {
       copyButton.textContent = "Copy to Clipboard";
     }, 2000);
   });
+
   summarizeThisPageButton.addEventListener("click", function () {
     summarizeThisPageButton.disabled = true;
     document.getElementById("summary").innerHTML = "processing...";
-    copyButton.classList.remove("hidden");
-    summaryInput.classList.remove("hidden");
+    copyButton.style.display = "block";
+    summaryInput.style.display = "block";
+    // copyButton.classList.remove("hidden");
+    // summaryInput.classList.remove("hidden");
     sendMessage().then((summary) => {
       summarizeThisPageButton.disabled = false;
       if (typeof summary === "string") {
