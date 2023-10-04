@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     action: "summarize-selection",
   });
   const content = response.content;
-  // console.log('content:' + content)
+  // console.log("content:" + content);
 
   if (!content || content.trim().length === 0) {
     document.getElementById("main-page").classList.remove("hidden");
@@ -17,8 +17,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   } else {
     document.getElementById("side-page").innerHTML = "processing...";
     document.getElementById("side-page").classList.remove("hidden");
-    requestGPTAPI(content.trim(), 1, "side-page");
+    document.getElementById("summarize-this-page-button").disabled = "true";
+    await requestGPTAPI(content.trim(), "side-page");
+    const sp = document.getElementById("side-page").textContent;
+    copyToClipboard(sp);
     document.getElementById("copy-button").style.display = "block";
+    document.getElementById("copy-button").innerHTML = "Copied!!";
   }
 });
 
@@ -74,19 +78,18 @@ function loadMainPage() {
   });
 
   summarizeThisPageButton.addEventListener("click", function () {
-    summarizeThisPageButton.disabled = true;
+    summarizeThisPageButton.disabled = "true";
     document.getElementById("summary").innerHTML = "processing...";
-    copyButton.style.display = "block";
     summaryInput.style.display = "block";
-    // copyButton.classList.remove("hidden");
-    // summaryInput.classList.remove("hidden");
-    sendMessage().then((summary) => {
-      summarizeThisPageButton.disabled = false;
-      if (typeof summary === "string") {
-        document.getElementById("summary").innerHTML = summary;
-      }
-      console.log(summary);
-    });
+    sendMessage()
+      .then((summary) => {
+        summarizeThisPageButton.disabled = false;
+        if (typeof summary === "string") {
+          document.getElementById("summary").innerHTML = summary;
+        }
+        // console.log(summary);
+      })
+      .then(() => (copyButton.style.display = "block"));
   });
 }
 
@@ -96,10 +99,12 @@ const sendMessage = async () => {
       active: true,
       currentWindow: true,
     });
+    // console.log("tabid" + tab.id);
     const response = await chrome.tabs.sendMessage(tab.id, {
       action: "summarize",
     });
     const content = response.content;
+    // console.log("🎊🎊content:" + content);
 
     let summary = "";
     let flag = true;
@@ -110,24 +115,24 @@ const sendMessage = async () => {
       summary = "Web page content is empty";
     }
 
-    if (flag) summary = await requestGPTAPI(content.trim(), 1, "summary");
+    if (flag) summary = await requestGPTAPI(content.trim(), "summary");
 
     return summary;
   } catch (error) {
-    return error.message + " Refresh the page and try again";
+    return error.message + " Refresh";
   }
 };
 
-// a function to request GPT API and get the repsonse
-async function requestGPTAPI(content, completions, ele) {
+// a function to request GPTAPI and get therepsonse
+async function requestGPTAPI(content, ele) {
   //fetch api key
   const apiKey = await readSyncStorage("apiKey");
 
-  // is apiKey is empty, return
+  // is for apiKey is empty
   if (!apiKey || !apiKey.trim().length) {
     document.getElementById(
       ele
-    ).innerHTML = `Please enter your API key in the designated field. You can get your API key from https://openai.com/`;
+    ).innerHTML = `Please enter your API key , You can get your API key from https://openai.com/`;
     return false;
   }
 
@@ -142,7 +147,6 @@ async function requestGPTAPI(content, completions, ele) {
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  // const language = document.getElementById("languages").value;
   const system_content =
     "You are a helpful assistant that can analyze text input and generate a concise and coherent summary that captures the main points of the input.";
   const promptTemplate = `Please summarize the following text.Divide it into 1. Provide Summary
@@ -152,12 +156,11 @@ async function requestGPTAPI(content, completions, ele) {
     { role: "system", content: system_content },
     { role: "user", content: prompt },
   ];
-  console.log("messages: " + messages);
+  // console.log("🎊🎊messages: " + messages);
   const url = "https://api.openai.com/v1/chat/completions";
   const body = {
     model: "gpt-3.5-turbo-16k",
     messages: messages,
-    n: completions,
     stream: true,
   };
   const headers = {
@@ -171,6 +174,7 @@ async function requestGPTAPI(content, completions, ele) {
       body: JSON.stringify(body),
     });
 
+    // console.log("response: " + response);
     const reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8");
     if (response.status !== 200) {
@@ -186,30 +190,31 @@ async function requestGPTAPI(content, completions, ele) {
         break;
       }
       // split the response by data: and get the last part
-      // console.log(decoder.decode(value))
+      // console.log("VAlUE: " + value);
+      // console.log("DVALUE: " + decoder.decode(value));
       const dataArry = decoder.decode(value).split("data:");
       // iterate dataArry and get the last part
+      // console.log("DATAARRAY: " + dataArry);
       for (data of dataArry) {
         if (
           typeof data === "string" &&
           data.trim().length > 0 &&
           data.trim().startsWith("{")
         ) {
+          // console.log("DATA: " + data);
           const dataObj = JSON.parse(data);
           const dataConetent = dataObj.choices[0].delta.content;
           if (dataConetent) content += dataConetent;
         }
       }
+      // console.log("CONTENT: " + content);
       const formattedContent = content.split("\n").map(wrapInXML).join("");
-
+      // console.log("FORMATCONTENT: " + formattedContent);
       document.getElementById(
         ele
       ).innerHTML = `<ul class='response-content'>${formattedContent}</ul>`;
     }
 
-    // content = res.choices[0]['message']['content']
-    // format the content wrap it in a list according to new line characters and point numbers
-    // const formattedContent = content.split('\n').map(wrapInXML).join('')
     return true;
   } catch (error) {
     document.getElementById(
